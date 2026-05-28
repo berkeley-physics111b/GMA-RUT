@@ -446,6 +446,9 @@ class HistogramTab(tk.Frame):
         self.v_min    = tk.DoubleVar(value=0.0)
         self.v_max    = tk.DoubleVar(value=1.0)
 
+        for var in (self.n_bins, self.v_min, self.v_max):
+            var.trace_add("write", lambda *_: self.after(0, self._redraw))
+
         _lf(hist_frm, "Bins:",      col=0, row=0); _ef(hist_frm, self.n_bins,  col=1, row=0, width=6)
         _lf(hist_frm, "V min:",     col=0, row=1); _ef(hist_frm, self.v_min,   col=1, row=1, width=8)
         _lf(hist_frm, "V max:",     col=0, row=2); _ef(hist_frm, self.v_max,   col=1, row=2, width=8)
@@ -718,10 +721,10 @@ class PulseHeightAnalyzer(tk.Tk):
         nb.pack(fill="both", expand=True, padx=4, pady=4)
 
         self._scope_tab = ScopeTab(nb, self._status)
-        nb.add(self._scope_tab, text="  🔭  Scope View  ")
+        nb.add(self._scope_tab, text="  Scope View  ")
 
         self._hist_tab = HistogramTab(nb, self._status)
-        nb.add(self._hist_tab, text="  📊  Pulse Height Histogram  ")
+        nb.add(self._hist_tab, text="  Pulse Height Histogram  ")
 
         self.protocol("WM_DELETE_WINDOW", self._on_close)
 
